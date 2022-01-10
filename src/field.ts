@@ -30,8 +30,20 @@ class Field {
 
     this.ctx.putImageData(this.lastCanvasState, 0, 0);
     this.updateMatrix(tetromino);
-
     this.draw();
+
+    if (tetromino.row >= ROWS - 2) {
+      this.saveFieldState();
+      return false;
+    }
+    console.log(this.field.length, tetromino.row);
+
+    return true;
+  }
+
+  private saveFieldState() {
+    this.lastCanvasState = this.ctx.getImageData(0, 0, this.width, this.height);
+    this.lastFieldState = _.cloneDeep(this.field);
   }
 
   private draw() {
@@ -98,8 +110,8 @@ class Field {
         this.ctx.strokeRect(x, y, BOX_SIZE, BOX_SIZE);
       }
     }
-    this.lastCanvasState = this.ctx.getImageData(0, 0, this.width, this.height);
-    this.lastFieldState = this.field;
+
+    this.saveFieldState();
   }
 }
 

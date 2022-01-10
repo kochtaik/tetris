@@ -36,11 +36,15 @@ class Game {
   }
 
   gameLoop(delta?: number) {
-    const secondsPassed = Math.floor(delta / 1000);
+    const secondsPassed = Math.floor(delta / 300);
 
     if (secondsPassed !== this.timestamp) {
       this.timestamp = secondsPassed;
-      this.field.render(this.currentTetromino);
+      const isRendered = this.field.render(this.currentTetromino);
+
+      if (!isRendered) {
+        this.currentTetromino = this.tetrominoSequence.pop();
+      }
 
       this.currentTetromino.move(
         this.currentTetromino.row + 1,
@@ -52,7 +56,7 @@ class Game {
 
   play() {
     this.prepareSequence();
-    this.currentTetromino = this.tetrominoSequence[0];
+    this.currentTetromino = this.tetrominoSequence.pop();
 
     this.gameLoop();
   }
