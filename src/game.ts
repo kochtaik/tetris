@@ -1,6 +1,7 @@
 import { BOX_SIZE, COLUMNS, ROWS, COLORS, TETROMINOS } from "./config";
 import { getRandomInRange } from "./utils/getRandomInRange";
 import { Tetromino } from "./tetromino";
+import * as _ from "lodash";
 
 class Game {
   canvas: HTMLCanvasElement;
@@ -9,6 +10,10 @@ class Game {
   field: Matrix;
   count: number;
   tetrominoSequence: Array<Tetromino>;
+  currentTetromino: Tetromino;
+  private lastFieldState: Matrix;
+  private lastCanvasState: ImageData;
+  timestamp: number;
 
   constructor() {
     this.canvas = document.querySelector("canvas") as HTMLCanvasElement;
@@ -29,7 +34,7 @@ class Game {
   }
 
   createField() {
-    for (let row = -2; row < ROWS; row += 1) {
+    for (let row = 0; row < ROWS; row += 1) {
       /* create empty row */
       this.field[row] = [];
 
@@ -54,7 +59,7 @@ class Game {
       const [name] = tetrominosNames.splice(randomInt, 1);
       const matrix = TETROMINOS[name as keyof typeof TETROMINOS];
       const col = Math.floor((COLUMNS - matrix.length) / 2);
-      const row = -2;
+      const row = 0;
       const color = COLORS[name as keyof typeof COLORS];
 
       const tetromino = new Tetromino(name, matrix, col, row, color);
@@ -62,7 +67,7 @@ class Game {
     }
   }
 
-  render(tetromino: Tetromino) {
+  buildMatrix(tetromino: Tetromino) {
     let y = tetromino.row;
 
     for (let rowIdx = 0; rowIdx < tetromino.matrix.length; rowIdx += 1) {
@@ -71,11 +76,8 @@ class Game {
 
       for (let colIdx = 0; colIdx < row.length; colIdx += 1) {
         const value = row[colIdx];
-
         if (value) {
-          this.ctx.fillStyle = tetromino.color;
-          this.ctx.strokeRect(x * BOX_SIZE, y * BOX_SIZE, BOX_SIZE, BOX_SIZE);
-          this.ctx.fillRect(x * BOX_SIZE, y * BOX_SIZE, BOX_SIZE, BOX_SIZE);
+          this.field[y][x] = 1;
         }
         x += 1;
       }
@@ -84,18 +86,69 @@ class Game {
     }
   }
 
-  gameLoop() {}
+  render() {
+    for (let rowIdx = 0; rowIdx < this.field.length; rowIdx += 1) {
+      const row = this.field[rowIdx];
+
+      for (let colIdx = 0; colIdx < row.length; colIdx += 1) {
+        const col = row[colIdx];
+        if (col) {
+          this.ctx.fillStyle = this.currentTetromino.color;
+          this.ctx.strokeRect(
+            colIdx * BOX_SIZE,
+            rowIdx * BOX_SIZE,
+            BOX_SIZE,
+            BOX_SIZE
+          );
+          this.ctx.fillRect(
+            colIdx * BOX_SIZE,
+            rowIdx * BOX_SIZE,
+            BOX_SIZE,
+            BOX_SIZE
+          );
+        }
+      }
+    }
+  }
+
+  gameLoop(delta?: number) {
+    const secondsPassed = Math.floor(delta / 1000);
+
+    if (secondsPassed !== this.timestamp) {
+      this.timestamp = secondsPassed;
+      this.field = _.cloneDeep(this.lastFieldState);
+
+      this.ctx.putImageData(this.lastCanvasState, 0, 0);
+      this.buildMatrix(this.currentTetromino);
+
+      this.render();
+      this.currentTetromino.move(
+        this.currentTetromino.row + 1,
+        this.currentTetromino.col
+      );
+    }
+    requestAnimationFrame(this.gameLoop.bind(this));
+  }
 
   startGame() {
     this.prepareSequence();
-    console.log(this.tetrominoSequence);
+    this.currentTetromino = this.tetrominoSequence[0];
+
+    this.gameLoop();
   }
 
   init() {
     this.ctx = this.canvas.getContext("2d");
     this.setSizes();
     this.createField();
+    this.lastFieldState = _.cloneDeep(this.field);
 
+    this.lastCanvasState = this.ctx.getImageData(
+      0,
+      0,
+      this.canvas.width,
+      this.canvas.height
+    );
     document.querySelector("button").addEventListener("click", () => {
       this.startGame();
     });
