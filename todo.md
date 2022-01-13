@@ -1,0 +1,1 @@
+- Place 'isCollide' call into 'moveDown' method
