@@ -57,11 +57,6 @@ class Tetromino {
    * */
   isCollide(field: Matrix) {
     // Check if a tetromino hits the bottom
-    if (this.row + 2 === field.length) {
-      return true;
-    }
-
-    // Check if a tetromino hits other tetrominos vertically
 
     let offsetY = 1;
     for (let r = this.matrix.length - 1; r >= 0; r -= 1) {
@@ -73,10 +68,13 @@ class Tetromino {
 
         // Check if tetromino's item has 0 or undefined below in its matrix
         if (!this.matrix[r + 1] || !this.matrix[r + 1][c]) {
+          // Coordinates of tetromino's items on the field
           const x = this.col + (this.matrix.length - offsetX);
           const y = this.row + (this.matrix.length - offsetY);
 
-          if (col && field[y + 1]?.[x]) {
+          // Check if a tetromino hits the bottom (first condition)
+          // or other tetrominos (second condition`)
+          if ((col && y + 1 === field.length) || (col && field[y + 1]?.[x])) {
             return true;
           }
         }
