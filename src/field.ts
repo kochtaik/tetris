@@ -32,11 +32,10 @@ class Field {
     this.updateMatrix(tetromino);
     this.draw();
 
-    if (tetromino.row >= ROWS - 2) {
+    if (tetromino.isCollide(this.field)) {
       this.saveFieldState();
       return false;
     }
-    console.log(this.field.length, tetromino.row);
 
     return true;
   }
