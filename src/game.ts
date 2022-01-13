@@ -40,16 +40,14 @@ class Game {
 
     if (secondsPassed !== this.timestamp) {
       this.timestamp = secondsPassed;
-      const isRendered = this.field.render(this.currentTetromino);
+      this.field.render(this.currentTetromino);
 
-      if (!isRendered) {
+      if (!this.currentTetromino.isCollide(this.field.field)) {
+        this.currentTetromino.moveDown();
+      } else {
+        this.field.saveFieldState();
         this.currentTetromino = this.tetrominoSequence.pop();
       }
-
-      this.currentTetromino.move(
-        this.currentTetromino.row + 1,
-        this.currentTetromino.col
-      );
     }
     requestAnimationFrame(this.gameLoop.bind(this));
   }

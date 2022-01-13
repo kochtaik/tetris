@@ -6,7 +6,7 @@ class Field {
   public width: number;
   public height: number;
   public canvas: HTMLCanvasElement;
-  protected field: Matrix;
+  public field: Matrix;
   private boxColor: string;
   private lastCanvasState: ImageData | null;
   private lastFieldState: Matrix;
@@ -31,16 +31,9 @@ class Field {
     this.ctx.putImageData(this.lastCanvasState, 0, 0);
     this.updateMatrix(tetromino);
     this.draw();
-
-    if (tetromino.isCollide(this.field)) {
-      this.saveFieldState();
-      return false;
-    }
-
-    return true;
   }
 
-  private saveFieldState() {
+  public saveFieldState() {
     this.lastCanvasState = this.ctx.getImageData(0, 0, this.width, this.height);
     this.lastFieldState = _.cloneDeep(this.field);
   }

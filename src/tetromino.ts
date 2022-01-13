@@ -21,9 +21,8 @@ class Tetromino {
     this.matrix = matrix;
   }
 
-  move(row: number, col: number) {
-    this.row = row;
-    this.col = col;
+  moveDown() {
+    this.row += 1;
   }
 
   /**
