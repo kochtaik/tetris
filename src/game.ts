@@ -35,6 +35,24 @@ class Game {
     }
   }
 
+  initControllers() {
+    window.addEventListener("keydown", (e) => {
+      switch (e.key) {
+        case "ArrowLeft":
+          this.currentTetromino.moveLeft();
+          break;
+        case "ArrowRight":
+          this.currentTetromino.moveRight();
+          break;
+        case "ArrowUp":
+          this.currentTetromino.rotate();
+          break;
+        default:
+          return;
+      }
+    });
+  }
+
   gameLoop(delta?: number) {
     const secondsPassed = Math.floor(delta / 300);
 
@@ -44,6 +62,7 @@ class Game {
 
       if (!this.currentTetromino.isCollide(this.field.field)) {
         this.currentTetromino.moveDown();
+        console.log(this.currentTetromino.row);
       } else {
         this.field.saveFieldState();
         this.currentTetromino = this.tetrominoSequence.pop();
@@ -61,7 +80,7 @@ class Game {
 
   init() {
     this.field.create();
-
+    this.initControllers();
     document.querySelector("button").addEventListener("click", () => {
       this.play();
     });

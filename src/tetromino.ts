@@ -1,5 +1,3 @@
-import { BOX_SIZE } from "./config";
-import { Field } from "./field";
 class Tetromino {
   public readonly name: string;
   public col: number;
@@ -23,6 +21,35 @@ class Tetromino {
 
   moveDown() {
     this.row += 1;
+  }
+
+  moveLeft() {
+    this.col -= 1;
+  }
+
+  moveRight() {
+    this.col += 1;
+  }
+
+  /**
+   * Rotates tetrominos matrix clockwise without changing it
+   */
+  rotate() {
+    const n = this.matrix.length;
+    const x = Math.floor(n / 2);
+    const y = n - 1;
+
+    for (let i = 0; i < x; i++) {
+      for (let j = i; j < y - i; j++) {
+        let k = this.matrix[i][j];
+        this.matrix[i][j] = this.matrix[y - j][i];
+        this.matrix[y - j][i] = this.matrix[y - i][y - j];
+        this.matrix[y - i][y - j] = this.matrix[j][y - i];
+        this.matrix[j][y - i] = k;
+      }
+    }
+
+    console.log(this.matrix);
   }
 
   /**
