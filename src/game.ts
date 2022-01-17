@@ -45,9 +45,9 @@ class Game {
           }
           break;
         case "ArrowRight":
-          // if (!this.currentTetromino.isCollideRight(this.field.field)) {
-          this.currentTetromino.moveRight();
-          // }
+          if (!this.currentTetromino.isCollideRight(this.field.field)) {
+            this.currentTetromino.moveRight();
+          }
           break;
         case "ArrowUp":
           this.currentTetromino.rotate();

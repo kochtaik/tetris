@@ -1,3 +1,5 @@
+import { COLUMNS, ROWS } from "./config";
+
 class Tetromino {
   public readonly name: string;
   public col: number;
@@ -70,7 +72,7 @@ class Tetromino {
 
           // Check if a tetromino hits the bottom (first condition)
           // or other tetrominos (second condition`)
-          if ((col && y + 1 === field.length) || (col && field[y + 1]?.[x])) {
+          if ((col && y + 1 === ROWS) || (col && field[y + 1]?.[x])) {
             return true;
           }
         }
@@ -110,7 +112,33 @@ class Tetromino {
     }
   }
 
-  isCollideRight(field: Matrix) {}
+  isCollideRight(field: Matrix) {
+    for (let r = 0; r < this.matrix.length; r += 1) {
+      const row = this.matrix[r];
+
+      for (let c = 0; c < this.matrix.length; c += 1) {
+        const tetrominosItem = row[c];
+
+        /* coordinates of tetromino's item on the field */
+        const x = this.col + c;
+        const y = this.row - 1 + r;
+
+        if (tetrominosItem) {
+          if (x === COLUMNS - 1) return true;
+
+          /* 
+            Check if there is no 0 or undefined from right of tetromino's item.
+            If so, check if there is a 1 on the field from right.
+          */
+          if (!row[c + 1]) {
+            if (field[y][x + 1] === 1) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 export { Tetromino };
