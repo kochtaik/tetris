@@ -1,4 +1,4 @@
-import { COLUMNS, ROWS } from "./config";
+import { BOX_SIZE, COLUMNS, ROWS } from "./config";
 
 class Tetromino {
   public readonly name: string;
@@ -135,6 +135,32 @@ class Tetromino {
               return true;
             }
           }
+        }
+      }
+    }
+  }
+
+  draw(ctx: CanvasRenderingContext2D) {
+    for (let rowIdx = 0; rowIdx < this.matrix.length; rowIdx += 1) {
+      const row = this.matrix[rowIdx];
+
+      for (let colIdx = 0; colIdx < row.length; colIdx += 1) {
+        const col = row[colIdx];
+
+        if (col) {
+          ctx.fillStyle = this.color;
+          ctx.strokeRect(
+            (this.col + colIdx) * BOX_SIZE,
+            (this.row + rowIdx) * BOX_SIZE,
+            BOX_SIZE,
+            BOX_SIZE
+          );
+          ctx.fillRect(
+            (this.col + colIdx) * BOX_SIZE,
+            (this.row + rowIdx) * BOX_SIZE,
+            BOX_SIZE,
+            BOX_SIZE
+          );
         }
       }
     }

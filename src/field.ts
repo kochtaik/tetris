@@ -30,37 +30,13 @@ class Field {
 
     this.ctx.putImageData(this.lastCanvasState, 0, 0);
     this.updateMatrix(tetromino);
-    this.draw();
+    console.log("here");
+    tetromino.draw(this.ctx);
   }
 
   public saveFieldState() {
     this.lastCanvasState = this.ctx.getImageData(0, 0, this.width, this.height);
     this.lastFieldState = _.cloneDeep(this.field);
-  }
-
-  private draw() {
-    for (let rowIdx = 0; rowIdx < this.field.length; rowIdx += 1) {
-      const row = this.field[rowIdx];
-
-      for (let colIdx = 0; colIdx < row.length; colIdx += 1) {
-        const col = row[colIdx];
-        if (col) {
-          this.ctx.fillStyle = this.boxColor;
-          this.ctx.strokeRect(
-            colIdx * BOX_SIZE,
-            rowIdx * BOX_SIZE,
-            BOX_SIZE,
-            BOX_SIZE
-          );
-          this.ctx.fillRect(
-            colIdx * BOX_SIZE,
-            rowIdx * BOX_SIZE,
-            BOX_SIZE,
-            BOX_SIZE
-          );
-        }
-      }
-    }
   }
 
   private updateMatrix(tetromino: Tetromino) {
