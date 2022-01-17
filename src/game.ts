@@ -37,15 +37,25 @@ class Game {
 
   initControllers() {
     window.addEventListener("keydown", (e) => {
+      console.log(e.key);
       switch (e.key) {
         case "ArrowLeft":
-          this.currentTetromino.moveLeft();
+          if (!this.currentTetromino.isCollideLeft(this.field.field)) {
+            this.currentTetromino.moveLeft();
+          }
           break;
         case "ArrowRight":
+          // if (!this.currentTetromino.isCollideRight(this.field.field)) {
           this.currentTetromino.moveRight();
+          // }
           break;
         case "ArrowUp":
           this.currentTetromino.rotate();
+          break;
+        case " ":
+          while (!this.currentTetromino.isCollide(this.field.field)) {
+            this.currentTetromino.moveDown();
+          }
           break;
         default:
           return;
@@ -62,7 +72,6 @@ class Game {
 
       if (!this.currentTetromino.isCollide(this.field.field)) {
         this.currentTetromino.moveDown();
-        console.log(this.currentTetromino.row);
       } else {
         this.field.saveFieldState();
         this.currentTetromino = this.tetrominoSequence.pop();
@@ -81,7 +90,9 @@ class Game {
   init() {
     this.field.create();
     this.initControllers();
-    document.querySelector("button").addEventListener("click", () => {
+    const button = document.querySelector("button");
+    button.addEventListener("click", (e: MouseEvent) => {
+      button.blur();
       this.play();
     });
   }

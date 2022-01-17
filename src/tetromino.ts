@@ -48,16 +48,12 @@ class Tetromino {
         this.matrix[j][y - i] = k;
       }
     }
-
-    console.log(this.matrix);
   }
 
   /**
    * Checks whether a tetromino hits other tetrominos or field ground
    * */
   isCollide(field: Matrix) {
-    // Check if a tetromino hits the bottom
-
     let offsetY = 1;
     for (let r = this.matrix.length - 1; r >= 0; r -= 1) {
       let offsetX = 1;
@@ -85,6 +81,36 @@ class Tetromino {
       offsetY += 1;
     }
   }
+
+  isCollideLeft(field: Matrix) {
+    for (let r = 0; r < this.matrix.length; r += 1) {
+      const row = this.matrix[r];
+
+      for (let c = 0; c < this.matrix.length; c += 1) {
+        const tetrominosItem = row[c];
+
+        /* coordinates of tetromino's item on the field */
+        const x = this.col + c;
+        const y = this.row - 1 + r;
+
+        if (tetrominosItem) {
+          if (x === 0) return true;
+
+          /* 
+            Check if there is no 0 or undefined from left of tetromino's item.
+            If so, check if there is a 1 on the field from left.
+          */
+          if (!row[c - 1]) {
+            if (field[y][x - 1] === 1) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  isCollideRight(field: Matrix) {}
 }
 
 export { Tetromino };
