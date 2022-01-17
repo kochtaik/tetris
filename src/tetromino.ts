@@ -93,7 +93,7 @@ class Tetromino {
 
         /* coordinates of tetromino's item on the field */
         const x = this.col + c;
-        const y = this.row - 1 + r;
+        const y = this.row + r;
 
         if (tetrominosItem) {
           if (x === 0) return true;
@@ -121,7 +121,7 @@ class Tetromino {
 
         /* coordinates of tetromino's item on the field */
         const x = this.col + c;
-        const y = this.row - 1 + r;
+        const y = this.row + r;
 
         if (tetrominosItem) {
           if (x === COLUMNS - 1) return true;

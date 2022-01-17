@@ -30,7 +30,6 @@ class Field {
 
     this.ctx.putImageData(this.lastCanvasState, 0, 0);
     this.updateMatrix(tetromino);
-    console.log("here");
     tetromino.draw(this.ctx);
   }
 

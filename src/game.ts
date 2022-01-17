@@ -37,7 +37,6 @@ class Game {
 
   initControllers() {
     window.addEventListener("keydown", (e) => {
-      console.log(e.key);
       switch (e.key) {
         case "ArrowLeft":
           if (!this.currentTetromino.isCollideLeft(this.field.field)) {
@@ -65,12 +64,12 @@ class Game {
 
   gameLoop(delta?: number) {
     const secondsPassed = Math.floor(delta / 300);
+    this.field.render(this.currentTetromino);
 
     if (secondsPassed !== this.timestamp) {
       this.timestamp = secondsPassed;
-      this.field.render(this.currentTetromino);
 
-      if (!this.currentTetromino.isCollide(this.field.field)) {
+      if (!this.currentTetromino?.isCollide(this.field.field)) {
         this.currentTetromino.moveDown();
       } else {
         this.field.saveFieldState();
