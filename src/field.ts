@@ -7,7 +7,6 @@ class Field {
   public height: number;
   public canvas: HTMLCanvasElement;
   public field: Matrix;
-  private lastCanvasState: ImageData | null;
   private lastFieldState: Matrix;
   private ctx: CanvasRenderingContext2D;
 
@@ -17,7 +16,7 @@ class Field {
     this.canvas = document.querySelector("canvas");
     this.ctx = document.querySelector("canvas").getContext("2d");
     this.field = [];
-    this.lastCanvasState = null;
+    // this.lastCanvasState = null;
     this.lastFieldState = [];
 
     this.canvas.width = width;
@@ -27,9 +26,8 @@ class Field {
   public render(tetromino: Tetromino) {
     this.field = _.cloneDeep(this.lastFieldState);
 
-    this.ctx.putImageData(this.lastCanvasState, 0, 0);
     this.updateMatrix(tetromino);
-
+    this.ctx.clearRect(0, 0, this.width, this.height);
     this.draw();
   }
 
@@ -44,27 +42,37 @@ class Field {
           this.ctx.fillStyle = COLORS[col as keyof typeof COLORS];
           this.ctx.fillRect(c * BOX_SIZE, r * BOX_SIZE, BOX_SIZE, BOX_SIZE);
         }
+
+        this.drawGridCell(c * BOX_SIZE, r * BOX_SIZE);
       }
     }
   }
 
   public saveFieldState() {
-    this.lastCanvasState = this.ctx.getImageData(0, 0, this.width, this.height);
     this.lastFieldState = _.cloneDeep(this.field);
   }
 
   removeFullRows() {
-    console.log("remove full rows");
-    for (let r = 0; r < this.field.length; r += 1) {
+    for (let r = this.field.length - 1; r >= 0; ) {
       const row = this.field[r];
-      const isFullRow = row.every((item) => item === 1);
+      const isFullRow = row.every((item) => !!item);
+
       if (isFullRow) {
-        for (let c = 0; c < row.length; c += 1) {
-          this.field[r][c] = 0;
+        for (let rowIdx = r; rowIdx >= 1; rowIdx -= 1) {
+          for (let c = 0; c < this.field[rowIdx].length; c += 1) {
+            this.field[rowIdx][c] = this.field[rowIdx - 1][c];
+          }
         }
+      } else {
+        r -= 1;
       }
     }
     console.log(this.field);
+  }
+
+  private drawGridCell(x: number, y: number) {
+    this.ctx.strokeStyle = "gray";
+    this.ctx.strokeRect(x, y, BOX_SIZE, BOX_SIZE);
   }
 
   private updateMatrix(tetromino: Tetromino) {
@@ -96,10 +104,7 @@ class Field {
         this.field[row][col] = 0;
 
         /* create visible grid background */
-        const x = col * BOX_SIZE;
-        const y = row * BOX_SIZE;
-        this.ctx.strokeStyle = "gray";
-        this.ctx.strokeRect(x, y, BOX_SIZE, BOX_SIZE);
+        this.drawGridCell(col * BOX_SIZE, row * BOX_SIZE);
       }
     }
 
