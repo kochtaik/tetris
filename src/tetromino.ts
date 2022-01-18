@@ -71,7 +71,7 @@ class Tetromino {
           const y = this.row + (this.matrix.length - offsetY);
 
           // Check if a tetromino hits the bottom (first condition)
-          // or other tetrominos (second condition`)
+          // or other tetrominos (second conditions)
           if ((col && y + 1 === ROWS) || (col && field[y + 1]?.[x])) {
             return true;
           }
@@ -103,7 +103,7 @@ class Tetromino {
             If so, check if there is a 1 on the field from left.
           */
           if (!row[c - 1]) {
-            if (field[y][x - 1] === 1) {
+            if (field[y][x - 1]) {
               return true;
             }
           }
@@ -131,7 +131,7 @@ class Tetromino {
             If so, check if there is a 1 on the field from right.
           */
           if (!row[c + 1]) {
-            if (field[y][x + 1] === 1) {
+            if (field[y][x + 1]) {
               return true;
             }
           }

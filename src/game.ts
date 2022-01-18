@@ -72,6 +72,7 @@ class Game {
       if (!this.currentTetromino?.isCollide(this.field.field)) {
         this.currentTetromino.moveDown();
       } else {
+        // this.field.removeFullRows();
         this.field.saveFieldState();
         this.currentTetromino = this.tetrominoSequence.pop();
       }

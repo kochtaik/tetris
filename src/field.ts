@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { BOX_SIZE, COLUMNS, ROWS } from "./config";
+import { BOX_SIZE, COLUMNS, ROWS, COLORS } from "./config";
 import { Tetromino } from "./tetromino";
 
 class Field {
@@ -7,7 +7,6 @@ class Field {
   public height: number;
   public canvas: HTMLCanvasElement;
   public field: Matrix;
-  private boxColor: string;
   private lastCanvasState: ImageData | null;
   private lastFieldState: Matrix;
   private ctx: CanvasRenderingContext2D;
@@ -30,12 +29,42 @@ class Field {
 
     this.ctx.putImageData(this.lastCanvasState, 0, 0);
     this.updateMatrix(tetromino);
-    tetromino.draw(this.ctx);
+
+    this.draw();
+  }
+
+  draw() {
+    for (let r = 0; r < this.field.length; r += 1) {
+      const row = this.field[r];
+
+      for (let c = 0; c < this.field.length; c += 1) {
+        const col = row[c];
+
+        if (col) {
+          this.ctx.fillStyle = COLORS[col as keyof typeof COLORS];
+          this.ctx.fillRect(c * BOX_SIZE, r * BOX_SIZE, BOX_SIZE, BOX_SIZE);
+        }
+      }
+    }
   }
 
   public saveFieldState() {
     this.lastCanvasState = this.ctx.getImageData(0, 0, this.width, this.height);
     this.lastFieldState = _.cloneDeep(this.field);
+  }
+
+  removeFullRows() {
+    console.log("remove full rows");
+    for (let r = 0; r < this.field.length; r += 1) {
+      const row = this.field[r];
+      const isFullRow = row.every((item) => item === 1);
+      if (isFullRow) {
+        for (let c = 0; c < row.length; c += 1) {
+          this.field[r][c] = 0;
+        }
+      }
+    }
+    console.log(this.field);
   }
 
   private updateMatrix(tetromino: Tetromino) {
@@ -48,17 +77,13 @@ class Field {
       for (let colIdx = 0; colIdx < row.length; colIdx += 1) {
         const value = row[colIdx];
         if (value) {
-          this.field[y][x] = 1;
+          this.field[y][x] = tetromino.name;
         }
         x += 1;
       }
 
       y += 1;
     }
-  }
-
-  public setBoxColor(color: string) {
-    this.boxColor = color;
   }
 
   public create() {

@@ -1,1 +1,1 @@
-type Matrix = Array<Array<number>>;
+type Matrix = Array<Array<number | string>>;
