@@ -1,6 +1,6 @@
 const BOX_SIZE = 32;
 const COLUMNS = 10;
-const ROWS = 22;
+const ROWS = 20;
 const TETROMINOS = {
   I: [
     [0, 0, 0, 0],
