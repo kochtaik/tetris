@@ -24,11 +24,11 @@ class Field {
   }
 
   public render(tetromino: Tetromino) {
-    this.field = _.cloneDeep(this.lastFieldState);
+    // this.field = _.cloneDeep(this.lastFieldState);
 
-    this.updateMatrix(tetromino);
     this.ctx.clearRect(0, 0, this.width, this.height);
     this.draw();
+    this.drawTetromino(tetromino);
   }
 
   draw() {
@@ -45,6 +45,45 @@ class Field {
 
         this.drawGridCell(c * BOX_SIZE, r * BOX_SIZE);
       }
+    }
+  }
+
+  drawTetromino(tetromino: Tetromino) {
+    for (let r = 0; r < tetromino.matrix.length; r += 1) {
+      for (let c = 0; c < tetromino.matrix[r].length; c += 1) {
+        const cell = tetromino.matrix[r][c];
+        if (cell) {
+          this.ctx.fillStyle = tetromino.color;
+          this.ctx.fillRect(
+            (tetromino.col + c) * BOX_SIZE,
+            (tetromino.row + r) * BOX_SIZE,
+            BOX_SIZE,
+            BOX_SIZE
+          );
+          this.ctx.strokeRect(
+            (tetromino.col + c) * BOX_SIZE,
+            (tetromino.row + r) * BOX_SIZE,
+            BOX_SIZE,
+            BOX_SIZE
+          );
+        }
+      }
+    }
+  }
+
+  place(tetromino: Tetromino) {
+    let y = tetromino.row;
+    for (let rowIdx = 0; rowIdx < tetromino.matrix.length; rowIdx += 1) {
+      let x = tetromino.col;
+      const row = tetromino.matrix[rowIdx];
+      for (let colIdx = 0; colIdx < row.length; colIdx += 1) {
+        const value = row[colIdx];
+        if (value) {
+          this.field[y][x] = tetromino.name;
+        }
+        x += 1;
+      }
+      y += 1;
     }
   }
 
@@ -67,31 +106,11 @@ class Field {
         r -= 1;
       }
     }
-    console.log(this.field);
   }
 
   private drawGridCell(x: number, y: number) {
     this.ctx.strokeStyle = "gray";
     this.ctx.strokeRect(x, y, BOX_SIZE, BOX_SIZE);
-  }
-
-  private updateMatrix(tetromino: Tetromino) {
-    let y = tetromino.row;
-
-    for (let rowIdx = 0; rowIdx < tetromino.matrix.length; rowIdx += 1) {
-      let x = tetromino.col;
-      const row = tetromino.matrix[rowIdx];
-
-      for (let colIdx = 0; colIdx < row.length; colIdx += 1) {
-        const value = row[colIdx];
-        if (value) {
-          this.field[y][x] = tetromino.name;
-        }
-        x += 1;
-      }
-
-      y += 1;
-    }
   }
 
   public create() {

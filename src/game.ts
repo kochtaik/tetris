@@ -49,7 +49,17 @@ class Game {
           }
           break;
         case "ArrowUp":
-          this.currentTetromino.rotate();
+          if (
+            !this.currentTetromino.isCollideLeft(this.field.field) &&
+            !this.currentTetromino.isCollideRight(this.field.field)
+          ) {
+            this.currentTetromino.rotate();
+          }
+          break;
+        case "ArrowDown":
+          if (!this.currentTetromino.isCollide(this.field.field)) {
+            this.currentTetromino.moveDown();
+          }
           break;
         case " ":
           while (!this.currentTetromino.isCollide(this.field.field)) {
@@ -63,7 +73,7 @@ class Game {
   }
 
   gameLoop(delta?: number) {
-    const secondsPassed = Math.floor(delta / 300);
+    const secondsPassed = Math.floor(delta / 1000);
     this.field.render(this.currentTetromino);
 
     if (secondsPassed !== this.timestamp) {
@@ -72,12 +82,12 @@ class Game {
       if (!this.currentTetromino?.isCollide(this.field.field)) {
         this.currentTetromino.moveDown();
       } else {
-        this.field.removeFullRows();
-        this.field.saveFieldState();
-        this.field.draw();
+        this.field.place(this.currentTetromino);
         this.currentTetromino = this.tetrominoSequence.pop();
       }
+      // this.field.saveFieldState();
     }
+    this.field.removeFullRows();
     requestAnimationFrame(this.gameLoop.bind(this));
   }
 
