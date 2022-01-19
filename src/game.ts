@@ -39,30 +39,58 @@ class Game {
     window.addEventListener("keydown", (e) => {
       switch (e.key) {
         case "ArrowLeft":
-          if (!this.currentTetromino.isCollideLeft(this.field.field)) {
+          if (
+            !this.field.canCollide(
+              this.currentTetromino.matrix,
+              this.currentTetromino.row,
+              this.currentTetromino.col - 1
+            )
+          ) {
             this.currentTetromino.moveLeft();
           }
           break;
         case "ArrowRight":
-          if (!this.currentTetromino.isCollideRight(this.field.field)) {
+          if (
+            !this.field.canCollide(
+              this.currentTetromino.matrix,
+              this.currentTetromino.row,
+              this.currentTetromino.col + 1
+            )
+          ) {
             this.currentTetromino.moveRight();
           }
           break;
         case "ArrowUp":
+          const newMatrix = this.currentTetromino.rotate();
           if (
-            !this.currentTetromino.isCollideLeft(this.field.field) &&
-            !this.currentTetromino.isCollideRight(this.field.field)
+            !this.field.canCollide(
+              newMatrix,
+              this.currentTetromino.row,
+              this.currentTetromino.col
+            )
           ) {
-            this.currentTetromino.rotate();
+            this.currentTetromino.matrix = newMatrix;
           }
           break;
         case "ArrowDown":
-          if (!this.currentTetromino.isCollide(this.field.field)) {
+          if (
+            !this.field.canCollide(
+              this.currentTetromino.matrix,
+              this.currentTetromino.row + 1,
+              this.currentTetromino.col
+            )
+          ) {
             this.currentTetromino.moveDown();
           }
           break;
         case " ":
-          while (!this.currentTetromino.isCollide(this.field.field)) {
+          while (
+            !this.field.canCollide(
+              this.currentTetromino.matrix,
+              this.currentTetromino.row + 1,
+              this.currentTetromino.col
+            )
+          ) {
             this.currentTetromino.moveDown();
           }
           break;
@@ -78,14 +106,19 @@ class Game {
 
     if (secondsPassed !== this.timestamp) {
       this.timestamp = secondsPassed;
-
-      if (!this.currentTetromino?.isCollide(this.field.field)) {
+      const nextRow = this.currentTetromino.row + 1;
+      if (
+        !this.field.canCollide(
+          this.currentTetromino.matrix,
+          nextRow,
+          this.currentTetromino.col
+        )
+      ) {
         this.currentTetromino.moveDown();
       } else {
         this.field.place(this.currentTetromino);
         this.currentTetromino = this.tetrominoSequence.pop();
       }
-      // this.field.saveFieldState();
     }
     this.field.removeFullRows();
     requestAnimationFrame(this.gameLoop.bind(this));

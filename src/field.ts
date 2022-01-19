@@ -7,7 +7,6 @@ class Field {
   public height: number;
   public canvas: HTMLCanvasElement;
   public field: Matrix;
-  private lastFieldState: Matrix;
   private ctx: CanvasRenderingContext2D;
 
   constructor(width = 512, height = 512) {
@@ -16,16 +15,12 @@ class Field {
     this.canvas = document.querySelector("canvas");
     this.ctx = document.querySelector("canvas").getContext("2d");
     this.field = [];
-    // this.lastCanvasState = null;
-    this.lastFieldState = [];
 
     this.canvas.width = width;
     this.canvas.height = height;
   }
 
   public render(tetromino: Tetromino) {
-    // this.field = _.cloneDeep(this.lastFieldState);
-
     this.ctx.clearRect(0, 0, this.width, this.height);
     this.draw();
     this.drawTetromino(tetromino);
@@ -87,10 +82,6 @@ class Field {
     }
   }
 
-  public saveFieldState() {
-    this.lastFieldState = _.cloneDeep(this.field);
-  }
-
   removeFullRows() {
     for (let r = this.field.length - 1; r >= 0; ) {
       const row = this.field[r];
@@ -104,6 +95,27 @@ class Field {
         }
       } else {
         r -= 1;
+      }
+    }
+  }
+
+  /**
+   * Checks whether a tetromino hits other tetrominos or field ground
+   * */
+  canCollide(matrix: Matrix, row: number, col: number) {
+    for (let r = 0; r < matrix.length; r += 1) {
+      for (let c = 0; c < matrix[r].length; c += 1) {
+        const cell = matrix[r][c];
+
+        if (
+          cell &&
+          (col + c < 0 ||
+            col + c >= COLUMNS ||
+            row + r >= ROWS ||
+            this.field[row + r][col + c])
+        ) {
+          return true;
+        }
       }
     }
   }
@@ -126,8 +138,6 @@ class Field {
         this.drawGridCell(col * BOX_SIZE, row * BOX_SIZE);
       }
     }
-
-    this.saveFieldState();
   }
 }
 
