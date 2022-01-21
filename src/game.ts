@@ -117,6 +117,9 @@ class Game {
         this.currentTetromino.moveDown();
       } else {
         this.field.place(this.currentTetromino);
+        if (!this.tetrominoSequence.length) {
+          this.prepareSequence();
+        }
         this.currentTetromino = this.tetrominoSequence.pop();
       }
     }
