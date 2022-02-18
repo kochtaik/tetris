@@ -7,7 +7,38 @@
     <title>Tetris</title>
   </head>
   <body>
-    <button>Start</button>
-    <canvas></canvas>
+    <main>
+      <div class="sections">
+        <div id="canvasContainer"></div>
+        <div class="info">
+          <div class="controls">
+            <button id="start">Start</button>
+            <button id="pause">Pause</button>
+          </div>
+
+          <div class="stats">
+            <table cellspacing="5">
+              <caption>Statistics</caption>
+              <tr>
+                <td>Level:</td>
+                <td>
+                  <span id="level">1</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Score:</td>
+                <td id="points">0</td>
+              </tr>
+              <tr>
+                <td>Time:</td>
+                <td>
+                  <span id="elapsedTime">00:00:00</span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
   </body>
 </html>

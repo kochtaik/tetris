@@ -1,6 +1,11 @@
-const BOX_SIZE = 32;
+const CELL_SIZE = 24;
 const COLUMNS = 10;
-const ROWS = 20;
+const ROWS = 22;
+const OFFSET = 1;
+/**
+ * Number by which the number of destroyed rows is multiplied
+ */
+const POINTS_COEFFICIENT = 100;
 const TETROMINOS = {
   I: [
     [0, 0, 0, 0],
@@ -49,4 +54,4 @@ const COLORS = {
   T: "purple",
 };
 
-export { BOX_SIZE, COLUMNS, ROWS, TETROMINOS, COLORS };
+export { CELL_SIZE, COLUMNS, ROWS, TETROMINOS, COLORS, OFFSET, POINTS_COEFFICIENT };

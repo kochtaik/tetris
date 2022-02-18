@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["es6", "es2015.promise", "dom", "scripthost"],
+    "lib": ["es6", "es2015.promise", "ES2017.String", "dom", "scripthost"],
     "module": "commonjs",
     "sourceMap": true,
     "strict": true,
