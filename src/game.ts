@@ -14,7 +14,6 @@ class Game {
   private renderer: Renderer | null;
   public _points: number;
   public _level: number;
-  public timeStart: number;
   public timer: Timer | null;
   private frameStamp: number;
   public speed: number;
@@ -141,15 +140,17 @@ class Game {
   play() {
     this.currentTetromino = this.getNextTetromino();
     this.timer.start();
+
+    /* update time */
     setInterval(() => {
       this.printTime(this.timer.getElapsedTimeString());
-    }, 10)
-    this.animationId = requestAnimationFrame(this.gameLoop.bind(this))
+    }, 10);
+    this.animationId = requestAnimationFrame(this.gameLoop.bind(this));
   }
 
   pause(): void {
     /* Return if game is not started */
-    if (!this.timeStart) return;
+    if (!this.currentTetromino) return;
 
     if (this.isPaused) {
       this.animationId = requestAnimationFrame(this.gameLoop.bind(this))
