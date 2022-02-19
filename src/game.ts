@@ -140,20 +140,18 @@ class Game {
   play() {
     this.currentTetromino = this.getNextTetromino();
     this.timer.start();
-
-    /* update time */
-    setInterval(() => {
-      this.printTime(this.timer.getElapsedTimeString());
-    }, 10);
     this.animationId = requestAnimationFrame(this.gameLoop.bind(this));
   }
 
   pause(): void {
     /* Return if game is not started */
     if (!this.currentTetromino) return;
-
+  
     if (this.isPaused) {
       this.animationId = requestAnimationFrame(this.gameLoop.bind(this))
+      this.timer.start();
+    } else {
+      this.timer.pause();
     }
 
     this.isPaused = !this.isPaused;
@@ -177,11 +175,6 @@ class Game {
   endGame() {
     cancelAnimationFrame(this.animationId);
     this.renderer.showGameOver();
-  }
-
-  printTime(time: string): void {
-    const elapsedTimeElement = document.querySelector('#elapsedTime');
-    elapsedTimeElement.textContent = time;
   }
 
   incrementPoints(rowsNumber: number): void {

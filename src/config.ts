@@ -1,6 +1,6 @@
 const CELL_SIZE = 24;
 const COLUMNS = 10;
-const ROWS = 22;
+const ROWS = 20;
 const OFFSET = 1;
 /**
  * Number by which the number of destroyed rows is multiplied
