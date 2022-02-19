@@ -148,9 +148,11 @@ class Game {
     if (!this.currentTetromino) return;
   
     if (this.isPaused) {
-      this.animationId = requestAnimationFrame(this.gameLoop.bind(this))
+      (document.querySelector("#pause") as HTMLElement).textContent = "Pause";
+      this.animationId = requestAnimationFrame(this.gameLoop.bind(this));
       this.timer.start();
     } else {
+      (document.querySelector("#pause") as HTMLElement).textContent = "Resume";
       this.timer.pause();
     }
 
