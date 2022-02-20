@@ -5,7 +5,7 @@ import Tetromino from "./Tetromino";
  */
 class Board {
   public matrix: Matrix;
-  public rows: number
+  public rows: number;
   public columns: number;
 
   constructor(rows: number, columns: number) {
@@ -43,7 +43,7 @@ class Board {
    * Merges tetromino into matrix of board;
    * 
    * @returns number of destroyed rows 
-   */ 
+   */
   public landTetromino(tetromino: Tetromino): number {
     for (let r = 0; r < tetromino.matrix.length; r += 1) {
       for (let c = 0; c < tetromino.matrix[r].length; c += 1) {
@@ -63,7 +63,7 @@ class Board {
     let rowsDestroyed = 0;
 
     for (let r = 0; r < this.matrix.length; r += 1) {
-      const row = this.matrix[r]
+      const row = this.matrix[r];
       const isFullRow = row.every((cell) => !!cell);
       if (isFullRow) {
 

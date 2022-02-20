@@ -1,4 +1,4 @@
-import BoardMatrix from "./Matrix"
+import BoardMatrix from "./Matrix";
 import Tetromino from "./Tetromino";
 import Controllers from "./controllers";
 import { ROWS, COLUMNS, TETROMINOS, CELL_SIZE, POINTS_COEFFICIENT } from "./config";
@@ -8,16 +8,16 @@ import Timer from "./Timer";
 import NextPiece from "./NextPiece";
 import _ from "lodash";
 class Game {
-  public board: BoardMatrix
+  public board: BoardMatrix;
   public nextPiece: NextPiece;
-  public sequence: Array<Tetromino>
+  public sequence: Array<Tetromino>;
   public timer: Timer | null;
   public controllers: Controllers | null;
   public speed: number;
   public linesBeforeNextLevel: number;
   private renderer: Renderer | null;
   private animationId: number;
-  private _currentTetromino: Tetromino; 
+  private _currentTetromino: Tetromino;
   private _points: number;
   private _level: number;
   private _isPaused: boolean;
@@ -37,7 +37,7 @@ class Game {
   }
 
   get points(): number {
-    return this._points
+    return this._points;
   }
 
   set points(value: number) {
@@ -68,7 +68,7 @@ class Game {
   get isPaused(): boolean {
     return this._isPaused;
   }
-  
+
   set isPaused(value: boolean) {
     this._isPaused = value;
     this.controllers.isPaused = value;
@@ -95,16 +95,16 @@ class Game {
 
     const currentTetromino = this.sequence.pop();
     this.setNextTetromino();
-    
+
     return currentTetromino;
   }
-  
+
   setNextTetromino(): void {
     if (!this.sequence.length) {
       this.getCurrentTetromino();
     }
-    
-    const nextTetromino = _.cloneDeep(this.sequence[this.sequence.length - 1])
+
+    const nextTetromino = _.cloneDeep(this.sequence[this.sequence.length - 1]);
     this.nextPiece.set(nextTetromino);
   }
 
@@ -120,9 +120,9 @@ class Game {
     this.frameStamp = 0;
     this.isPaused = false;
     (document.querySelector("#pause") as HTMLElement).textContent = "Pause";
-    cancelAnimationFrame(this.animationId)
+    cancelAnimationFrame(this.animationId);
   }
-  
+
   play() {
     this.reset();
     this.currentTetromino = this.getCurrentTetromino();
@@ -133,7 +133,7 @@ class Game {
   pause(): void {
     /* Return if game is not started */
     if (!this.currentTetromino) return;
-  
+
     if (this.isPaused) {
       (document.querySelector("#pause") as HTMLElement).textContent = "Pause";
       this.animationId = requestAnimationFrame(this.gameLoop.bind(this));
@@ -181,8 +181,8 @@ class Game {
   }
 
   gameLoop(time: number) {
-    if (this.isPaused) return; 
-    
+    if (this.isPaused) return;
+
 
     /**
      * We have to check for collisions every time
@@ -195,21 +195,21 @@ class Game {
       this.currentTetromino.column
     )) {
 
-        this.frameStamp = (this.frameStamp + 1) % this.speed;
-        if (this.frameStamp % this.speed === 0) {
-          this.currentTetromino.moveDown();
-        }
-      } else {
-        this.handleGroundHit();
+      this.frameStamp = (this.frameStamp + 1) % this.speed;
+      if (this.frameStamp % this.speed === 0) {
+        this.currentTetromino.moveDown();
       }
-      
+    } else {
+      this.handleGroundHit();
+    }
+
     if (this.isGameOver()) {
       return this.endGame();
     }
 
     this.renderer.draw(this.board.matrix);
-    this.renderer.render(this.currentTetromino)
-    this.animationId = requestAnimationFrame(this.gameLoop.bind(this))
+    this.renderer.render(this.currentTetromino);
+    this.animationId = requestAnimationFrame(this.gameLoop.bind(this));
   }
 
   initRenderer() {
@@ -220,7 +220,7 @@ class Game {
     if (!canvasContainer) {
       throw new Error('Canvas container must be provided');
     }
-    
+
     canvasContainer.appendChild(canvas);
     this.renderer.setCanvas(canvas);
     this.renderer.setCanvasSize(CELL_SIZE * COLUMNS, CELL_SIZE * ROWS);
@@ -238,13 +238,13 @@ class Game {
     startButton.addEventListener('click', (e) => {
       startButton.textContent = "Restart";
       startButton.blur();
-      this.play()
-    })
-    
+      this.play();
+    });
+
     document.querySelector('#pause').addEventListener('click', (e) => {
       (e.target as HTMLElement).blur();
       this.pause();
-    })
+    });
   }
 }
 

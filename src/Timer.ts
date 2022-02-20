@@ -1,7 +1,7 @@
 class Timer {
   private timeStart = 0;
   private elapsedTime = 0;
-  private timerId: number
+  private timerId: number;
   public millisecondsPassed: number;
   public hours: number;
   public minutes: number;
@@ -16,18 +16,18 @@ class Timer {
     const secDiff = (minDiff - this.minutes) * 60;
     this.seconds = Math.floor(secDiff);
   }
-  
+
   public getElapsedTimeString(): string {
     this.calculateTime();
     const hoursString = this.hours.toString().padStart(2, "0");
     const minutesString = this.minutes.toString().padStart(2, "0");
     const secondsString = this.seconds.toString().padStart(2, "0");
-    return `${hoursString}:${minutesString}:${secondsString}`
+    return `${hoursString}:${minutesString}:${secondsString}`;
   }
-  
+
   public start(): void {
     this.timeStart = Date.now() - this.elapsedTime;
-    
+
     this.timerId = setInterval(() => {
       this.elapsedTime = Date.now() - this.timeStart;
       this.print(this.getElapsedTimeString());

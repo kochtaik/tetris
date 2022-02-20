@@ -1,7 +1,7 @@
 class Tetromino {
-  public name: string
+  public name: string;
   public matrix: Matrix;
-  public row: number
+  public row: number;
   public column: number;
 
   constructor(name: string, matrix: Matrix, row: number, column: number) {
@@ -39,13 +39,13 @@ class Tetromino {
     return count;
   }
 
-  
+
   /**
    *
    * Returns a new matrix rotated 90 degrees clockwise. It can be set instead of current one
    *
    */
-  
+
   public rotate(): Matrix {
     return this.matrix.map((row, i) =>
       row.map((_, j) => this.matrix[this.matrix.length - 1 - j][i])

@@ -10,7 +10,7 @@ class Canvas {
   public context: CanvasRenderingContext2D | null;
 
   constructor() {
-    this.canvas = null
+    this.canvas = null;
     this.context = null;
   }
 
@@ -34,7 +34,7 @@ class Canvas {
         /* Draw grid */
         this.context.strokeStyle = '#ffffff';
         this.context.lineWidth = 0.1;
-        this.context.strokeRect(x, y, CELL_SIZE, CELL_SIZE)
+        this.context.strokeRect(x, y, CELL_SIZE, CELL_SIZE);
       }
     }
   }
@@ -51,7 +51,7 @@ class Canvas {
 
         if (cell) {
           this.context.fillStyle = COLORS[tetromino.name as keyof typeof COLORS];
-          this.context.fillRect(x, y, CELL_SIZE - OFFSET, CELL_SIZE - OFFSET)
+          this.context.fillRect(x, y, CELL_SIZE - OFFSET, CELL_SIZE - OFFSET);
         }
       }
     }
@@ -63,16 +63,16 @@ class Canvas {
   public showMessage(message: string) {
     const boxHeight = CELL_SIZE * 7;
     const boxWidth = this.canvas.width;
-    const x  = 0;
+    const x = 0;
     const y = (this.canvas.height / 2) - (boxHeight / 2);
     this.context.fillStyle = 'rgba(0, 0, 0, 0.5)';
     this.context.fillRect(x, y, boxWidth, boxHeight);
 
     this.context.textAlign = 'center';
     this.context.textBaseline = "middle";
-    this.context.font = "36px sans-serif"
+    this.context.font = "36px sans-serif";
     this.context.fillStyle = '#ffffff';
-    this.context.fillText(message, this.canvas.width / 2, this.canvas.height / 2)
+    this.context.fillText(message, this.canvas.width / 2, this.canvas.height / 2);
   }
 
   public setCanvas(canvas: HTMLCanvasElement) {
@@ -97,4 +97,4 @@ class Canvas {
   }
 }
 
-export default Canvas
+export default Canvas;

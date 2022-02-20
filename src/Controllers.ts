@@ -6,8 +6,8 @@ class Controllers {
   public isPaused: boolean;
 
   constructor(board: Matrix) {
-    this.board = board
-    
+    this.board = board;
+
     window.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') {
         if (this.isPaused) return;
@@ -20,7 +20,7 @@ class Controllers {
           this.tetromino.moveLeft();
         }
       }
-  
+
       if (e.key === 'ArrowRight') {
         if (this.isPaused) return;
 
@@ -32,7 +32,7 @@ class Controllers {
           this.tetromino.moveRight();
         }
       }
-  
+
       /* Soft drop */
       if (e.key === 'ArrowDown') {
         if (this.isPaused) return;
@@ -45,12 +45,12 @@ class Controllers {
           this.tetromino.moveDown();
         }
       }
-  
+
       /* Rotation */
       if (e.key === "ArrowUp") {
         if (this.isPaused) return;
         const rotatedTetrominoBoardMatrix = this.tetromino.rotate();
-  
+
         if (!this.board.canCollide(
           rotatedTetrominoBoardMatrix,
           this.tetromino.row,
@@ -59,7 +59,7 @@ class Controllers {
           this.tetromino.matrix = rotatedTetrominoBoardMatrix;
         }
       }
-  
+
       /* Hard drop */
       if (e.key === " ") {
         if (this.isPaused) return;
@@ -71,7 +71,7 @@ class Controllers {
           this.tetromino.moveDown();
         }
       }
-    })
+    });
   }
 
   public setTetromino(tetromino: Tetromino) {
