@@ -40,10 +40,12 @@ class Timer {
 
   public reset() {
     this.timeStart = 0;
+    this.elapsedTime = 0;
     this.hours = 0;
     this.minutes = 0;
     this.seconds = 0;
     this.millisecondsPassed = 0;
+    this.print("00:00:00");
     clearInterval(this.timerId);
   }
 

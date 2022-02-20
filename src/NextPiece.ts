@@ -27,6 +27,10 @@ class NextPiece {
     this.renderer.clear();
     this.renderer.render(tetromino);
   }
+
+  public clear(): void {
+    this.renderer.clear();
+  }
 }
 
 export default NextPiece;

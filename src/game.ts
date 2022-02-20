@@ -155,7 +155,19 @@ class Game {
     this.nextPiece.set(nextTetromino);
   }
 
+  reset() {
+    this.timer.reset();
+    this.renderer.clear();
+    this.board.clear();
+    this.nextPiece.clear();
+    this.level = 1;
+    this.points = 0;
+    this.speed = 48;
+    this.linesBeforeNextLevel = this.level * 10;
+  }
+  
   play() {
+    this.reset();
     this.currentTetromino = this.getCurrentTetromino();
     this.timer.start();
     this.animationId = requestAnimationFrame(this.gameLoop.bind(this));
@@ -192,6 +204,8 @@ class Game {
   endGame() {
     cancelAnimationFrame(this.animationId);
     this.timer.pause();
+    this.currentTetromino = null;
+    document.querySelector('#start').textContent = "Restart";
     this.renderer.showMessage("GAME OVER");
   }
 
