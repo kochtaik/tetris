@@ -128,7 +128,7 @@ class Game {
       const randomInt = getRandomInRange(0, names.length - 1);
       const [name] = names.splice(randomInt, 1);
       const matrix = TETROMINOS[name as keyof typeof TETROMINOS];
-      const row = 0;
+      const row = name === "I" ? -1 : 0;
       const column = Math.floor((COLUMNS - matrix.length) / 2);
       const tetromino = new Tetromino(name, matrix, row, column);
       this.sequence.push(tetromino);
