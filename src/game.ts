@@ -171,6 +171,7 @@ class Game {
       this.timer.start();
     } else {
       (document.querySelector("#pause") as HTMLElement).textContent = "Resume";
+      this.renderer.showMessage("PAUSED");
       this.timer.pause();
     }
 
