@@ -34,8 +34,7 @@ class Canvas {
    * Draws board on canvas according to the matrix 
    */
   public draw(matrix: Matrix): void {
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
+    this.clear();
     for (let r = 0; r < matrix.length; r += 1) {
       for (let c = 0; c < matrix[r].length; c += 1) {
         const cell = matrix[r][c];
@@ -85,6 +84,13 @@ class Canvas {
 
     this.canvas.width = width;
     this.canvas.height = height;
+  }
+
+  /**
+   * Clears the canvas
+   */
+  public clear() {
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 }
 

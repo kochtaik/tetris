@@ -23,6 +23,21 @@ class Tetromino {
     this.row += 1;
   }
 
+  /**
+   * Get height of the tetromino
+   * (number of rows that has at least one "1")
+   */
+  public getHeight(): number {
+    let count = 0;
+
+    for (let r = 0; r < this.matrix.length; r += 1) {
+      const isNotEmpty = this.matrix[r].some((cell) => !!cell);
+      if (isNotEmpty) count += 1;
+    }
+
+    return count;
+  }
+
   
   /**
    *

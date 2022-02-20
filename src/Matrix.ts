@@ -79,6 +79,17 @@ class Board {
     }
     return rowsDestroyed;
   }
+
+  /**
+   * Clears the matrix
+   */
+  public clear(): void {
+    for (let r = 0; r < this.matrix.length; r += 1) {
+      for (let c = 0; c < this.matrix[r].length; c += 1) {
+        this.matrix[r][c] = 0;
+      }
+    }
+  }
 }
 
 export default Board;

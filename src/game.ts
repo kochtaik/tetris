@@ -5,16 +5,18 @@ import { ROWS, COLUMNS, TETROMINOS, CELL_SIZE, POINTS_COEFFICIENT } from "./conf
 import { getRandomInRange } from "./utils/getRandomInRange";
 import Renderer from "./Renderer";
 import Timer from "./Timer";
-
+import NextPiece from "./NextPiece";
+import _ from "lodash";
 class Game {
   public board: BoardMatrix
   private sequence: Array<Tetromino>
   private currentTetromino: Tetromino;
   private animationId: number;
   private renderer: Renderer | null;
+  public nextPiece: NextPiece;
+  public timer: Timer | null;
   public _points: number;
   public _level: number;
-  public timer: Timer | null;
   private frameStamp: number;
   public speed: number;
   public linesBeforeNextLevel: number;
@@ -130,15 +132,28 @@ class Game {
     }
   }
 
-  getNextTetromino() {
+  getCurrentTetromino(): Tetromino {
     if (!this.sequence.length) {
       this.generateTetrominoSequence();
     }
-    return this.sequence.pop();
+
+    const currentTetromino = this.sequence.pop();
+    this.setNextTetromino();
+    
+    return currentTetromino;
+  }
+  
+  setNextTetromino(): void {
+    if (!this.sequence.length) {
+      this.getCurrentTetromino();
+    }
+    
+    const nextTetromino = _.cloneDeep(this.sequence[this.sequence.length - 1])
+    this.nextPiece.set(nextTetromino);
   }
 
   play() {
-    this.currentTetromino = this.getNextTetromino();
+    this.currentTetromino = this.getCurrentTetromino();
     this.timer.start();
     this.animationId = requestAnimationFrame(this.gameLoop.bind(this));
   }
@@ -163,11 +178,7 @@ class Game {
     const rowsDestroyed = this.board.landTetromino(this.currentTetromino);
     this.incrementLevel(rowsDestroyed);
     this.incrementPoints(rowsDestroyed);
-    this.currentTetromino = this.getNextTetromino();
-
-    if (!this.animationId) {
-      this.animationId = requestAnimationFrame(this.gameLoop.bind(this))
-    }
+    this.currentTetromino = this.getCurrentTetromino();
   }
 
   isGameOver() {
@@ -213,7 +224,8 @@ class Game {
     if (this.isGameOver()) {
       return this.endGame();
     }
-    this.renderer.draw(this.board.matrix); // update canvas accordingly to the existing matrix
+
+    this.renderer.draw(this.board.matrix);
     this.renderer.render(this.currentTetromino)
     this.animationId = requestAnimationFrame(this.gameLoop.bind(this))
   }
@@ -231,13 +243,14 @@ class Game {
     this.renderer.setCanvas(canvas);
     this.renderer.setCanvasSize(CELL_SIZE * COLUMNS, CELL_SIZE * ROWS);
   }
-  
+
   init() {
     this.initRenderer();
     this.board.create();
     this.renderer.draw(this.board.matrix); // initial render to draw grid
     this.initControllers();
     this.timer = new Timer();
+    this.nextPiece = new NextPiece();
 
     document.querySelector('#start').addEventListener('click', (e) => {
       (e.target as HTMLElement).blur();
