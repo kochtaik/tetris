@@ -79,6 +79,7 @@ class Game {
         }
       }
 
+      /* Soft drop */
       if (e.key === 'ArrowDown') {
         if (this.isPaused) return;
         if (!this.board.canCollide(
@@ -90,6 +91,7 @@ class Game {
         }
       }
 
+      /* Rotation */
       if (e.key === "ArrowUp") {
         if (this.isPaused) return;
         const rotatedTetrominoBoardMatrix = this.currentTetromino.rotate();
@@ -103,6 +105,7 @@ class Game {
         }
       }
 
+      /* Hard drop */
       if (e.key === " ") {
         if (this.isPaused) return;
         while (!this.board.canCollide(
