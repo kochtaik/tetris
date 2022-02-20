@@ -191,6 +191,7 @@ class Game {
 
   endGame() {
     cancelAnimationFrame(this.animationId);
+    this.timer.pause();
     this.renderer.showMessage("GAME OVER");
   }
 
