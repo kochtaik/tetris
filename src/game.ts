@@ -9,21 +9,23 @@ import NextPiece from "./NextPiece";
 import _ from "lodash";
 class Game {
   public board: BoardMatrix
-  private sequence: Array<Tetromino>
-  private currentTetromino: Tetromino;
-  private animationId: number;
-  private renderer: Renderer | null;
   public nextPiece: NextPiece;
+  public sequence: Array<Tetromino>
   public timer: Timer | null;
-  public _points: number;
-  public _level: number;
-  private frameStamp: number;
+  public controllers: Controllers | null;
   public speed: number;
   public linesBeforeNextLevel: number;
-  public isPaused = false;
+  private renderer: Renderer | null;
+  private animationId: number;
+  private _currentTetromino: Tetromino; 
+  private _points: number;
+  private _level: number;
+  private _isPaused: boolean;
+  private frameStamp: number;
 
   constructor() {
     this.board = new BoardMatrix(ROWS, COLUMNS);
+    this.controllers = null;
     this.renderer = null;
     this.timer = null;
     this.sequence = [];
@@ -54,74 +56,25 @@ class Game {
     levelElement.textContent = value.toString();
   }
 
-
-  private initControllers() {
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') {
-        if (this.isPaused) return;
-        if (!this.board.canCollide(
-          this.currentTetromino.matrix,
-          this.currentTetromino.row,
-          this.currentTetromino.column - 1
-        )) {
-          this.currentTetromino.moveLeft();
-        }
-      }
-
-      if (e.key === 'ArrowRight') {
-        if (this.isPaused) return;
-        if (!this.board.canCollide(
-          this.currentTetromino.matrix,
-          this.currentTetromino.row,
-          this.currentTetromino.column + 1
-        )) {
-          this.currentTetromino.moveRight();
-        }
-      }
-
-      /* Soft drop */
-      if (e.key === 'ArrowDown') {
-        if (this.isPaused) return;
-        if (!this.board.canCollide(
-          this.currentTetromino.matrix,
-          this.currentTetromino.row + 1,
-          this.currentTetromino.column
-        )) {
-          this.currentTetromino.moveDown();
-        }
-      }
-
-      /* Rotation */
-      if (e.key === "ArrowUp") {
-        if (this.isPaused) return;
-        const rotatedTetrominoBoardMatrix = this.currentTetromino.rotate();
-
-        if (!this.board.canCollide(
-          rotatedTetrominoBoardMatrix,
-          this.currentTetromino.row,
-          this.currentTetromino.column,
-        )) {
-          this.currentTetromino.matrix = rotatedTetrominoBoardMatrix;
-        }
-      }
-
-      /* Hard drop */
-      if (e.key === " ") {
-        if (this.isPaused) return;
-        while (!this.board.canCollide(
-          this.currentTetromino.matrix,
-          this.currentTetromino.row + 1,
-          this.currentTetromino.column
-        )) {
-          this.currentTetromino.moveDown();
-        }
-
-        this.handleGroundHit();
-      }
-    })
+  get currentTetromino(): Tetromino {
+    return this._currentTetromino;
   }
 
-  private generateTetrominoSequence() {
+  set currentTetromino(value: Tetromino) {
+    this._currentTetromino = value;
+    this.controllers.setTetromino(value);
+  }
+
+  get isPaused(): boolean {
+    return this._isPaused;
+  }
+  
+  set isPaused(value: boolean) {
+    this._isPaused = value;
+    this.controllers.isPaused = value;
+  }
+
+  generateTetrominoSequence() {
     const names = Object.keys(TETROMINOS);
 
     while (names.length) {
@@ -229,20 +182,26 @@ class Game {
 
   gameLoop(time: number) {
     if (this.isPaused) return; 
-    this.frameStamp = (this.frameStamp + 1) % this.speed;
+    
 
-    if (this.frameStamp % this.speed === 0) {
+    /**
+     * We have to check for collisions every time
+     * screen is updated in order to remove rows
+     * and drop new pieces immediately if needed.
+     */
+    if (!this.board.canCollide(
+      this.currentTetromino.matrix,
+      this.currentTetromino.row + 1,
+      this.currentTetromino.column
+    )) {
 
-      if (!this.board.canCollide(
-        this.currentTetromino.matrix,
-        this.currentTetromino.row + 1,
-        this.currentTetromino.column
-        )) {
-          this.currentTetromino.moveDown()
-        } else {
-          this.handleGroundHit();
+        this.frameStamp = (this.frameStamp + 1) % this.speed;
+        if (this.frameStamp % this.speed === 0) {
+          this.currentTetromino.moveDown();
         }
-    }
+      } else {
+        this.handleGroundHit();
+      }
       
     if (this.isGameOver()) {
       return this.endGame();
@@ -271,7 +230,7 @@ class Game {
     this.initRenderer();
     this.board.create();
     this.renderer.draw(this.board.matrix); // initial render to draw grid
-    this.initControllers();
+    this.controllers = new Controllers(this.board);
     this.timer = new Timer();
     this.nextPiece = new NextPiece();
 

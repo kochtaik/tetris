@@ -1,65 +1,81 @@
 import Tetromino from "./Tetromino";
-
+import Matrix from "./Matrix";
 class Controllers {
+  private board: Matrix;
   private tetromino: Tetromino;
+  public isPaused: boolean;
 
-  public initControllers() {
+  constructor(board: Matrix) {
+    this.board = board
+    
     window.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') {
+        if (this.isPaused) return;
+
         if (!this.board.canCollide(
-          this.currentTetromino.matrix,
-          this.currentTetromino.row,
-          this.currentTetromino.column - 1
+          this.tetromino.matrix,
+          this.tetromino.row,
+          this.tetromino.column - 1
         )) {
-          this.currentTetromino.moveLeft();
+          this.tetromino.moveLeft();
         }
       }
-
+  
       if (e.key === 'ArrowRight') {
+        if (this.isPaused) return;
+
         if (!this.board.canCollide(
-          this.currentTetromino.matrix,
-          this.currentTetromino.row,
-          this.currentTetromino.column + 1
+          this.tetromino.matrix,
+          this.tetromino.row,
+          this.tetromino.column + 1
         )) {
-          this.currentTetromino.moveRight();
+          this.tetromino.moveRight();
         }
       }
-
+  
+      /* Soft drop */
       if (e.key === 'ArrowDown') {
+        if (this.isPaused) return;
+
         if (!this.board.canCollide(
-          this.currentTetromino.matrix,
-          this.currentTetromino.row + 1,
-          this.currentTetromino.column
+          this.tetromino.matrix,
+          this.tetromino.row + 1,
+          this.tetromino.column
         )) {
-          this.currentTetromino.moveDown();
+          this.tetromino.moveDown();
         }
       }
-
+  
+      /* Rotation */
       if (e.key === "ArrowUp") {
-        const rotatedTetrominoMatrix = this.currentTetromino.rotate();
-
+        if (this.isPaused) return;
+        const rotatedTetrominoBoardMatrix = this.tetromino.rotate();
+  
         if (!this.board.canCollide(
-          rotatedTetrominoMatrix,
-          this.currentTetromino.row,
-          this.currentTetromino.column,
+          rotatedTetrominoBoardMatrix,
+          this.tetromino.row,
+          this.tetromino.column,
         )) {
-          this.currentTetromino.matrix = rotatedTetrominoMatrix;
+          this.tetromino.matrix = rotatedTetrominoBoardMatrix;
         }
       }
-
-/*       if (e.key === " ") {
+  
+      /* Hard drop */
+      if (e.key === " ") {
+        if (this.isPaused) return;
         while (!this.board.canCollide(
-          this.currentTetromino.matrix,
-          this.currentTetromino.row + 1,
-          this.currentTetromino.column
+          this.tetromino.matrix,
+          this.tetromino.row + 1,
+          this.tetromino.column
         )) {
-          this.currentTetromino.moveDown();
+          this.tetromino.moveDown();
         }
-
-        this.board.landTetromino(this.currentTetromino);
-      } */
-      
+      }
     })
+  }
+
+  public setTetromino(tetromino: Tetromino) {
+    this.tetromino = tetromino;
   }
 }
 
