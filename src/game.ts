@@ -164,6 +164,10 @@ class Game {
     this.points = 0;
     this.speed = 48;
     this.linesBeforeNextLevel = this.level * 10;
+    this.frameStamp = 0;
+    this.isPaused = false;
+    (document.querySelector("#pause") as HTMLElement).textContent = "Pause";
+    cancelAnimationFrame(this.animationId)
   }
   
   play() {
@@ -271,8 +275,10 @@ class Game {
     this.timer = new Timer();
     this.nextPiece = new NextPiece();
 
-    document.querySelector('#start').addEventListener('click', (e) => {
-      (e.target as HTMLElement).blur();
+    const startButton: HTMLElement = document.querySelector("#start");
+    startButton.addEventListener('click', (e) => {
+      startButton.textContent = "Restart";
+      startButton.blur();
       this.play()
     })
     
