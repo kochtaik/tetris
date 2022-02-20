@@ -190,7 +190,7 @@ class Game {
 
   endGame() {
     cancelAnimationFrame(this.animationId);
-    this.renderer.showGameOver();
+    this.renderer.showMessage("GAME OVER");
   }
 
   incrementPoints(rowsNumber: number): void {

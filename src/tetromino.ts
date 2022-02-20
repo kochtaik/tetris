@@ -27,6 +27,7 @@ class Tetromino {
    * Get height of the tetromino
    * (number of rows that has at least one "1")
    */
+
   public getHeight(): number {
     let count = 0;
 

@@ -14,27 +14,12 @@ class Canvas {
     this.context = null;
   }
 
-  public showGameOver(): void {
-    const boxHeight = CELL_SIZE * 7;
-    const boxWidth = this.canvas.width;
-    const x  = 0;
-    const y = (this.canvas.height / 2) - (boxHeight / 2);
-    this.context.fillStyle = 'rgba(0, 0, 0, 0.5)';
-    this.context.fillRect(x, y, boxWidth, boxHeight);
-
-    const message = 'GAME OVER';
-    this.context.textAlign = 'center';
-    this.context.textBaseline = "middle";
-    this.context.font = "36px sans-serif"
-    this.context.fillStyle = '#ffffff';
-    this.context.fillText(message, this.canvas.width / 2, this.canvas.height / 2)
-  }
-
   /**
    * Draws board on canvas according to the matrix 
    */
   public draw(matrix: Matrix): void {
     this.clear();
+
     for (let r = 0; r < matrix.length; r += 1) {
       for (let c = 0; c < matrix[r].length; c += 1) {
         const cell = matrix[r][c];
@@ -70,6 +55,24 @@ class Canvas {
         }
       }
     }
+  }
+
+  /**
+   * Shows provided message on the canvas
+   */
+  public showMessage(message: string) {
+    const boxHeight = CELL_SIZE * 7;
+    const boxWidth = this.canvas.width;
+    const x  = 0;
+    const y = (this.canvas.height / 2) - (boxHeight / 2);
+    this.context.fillStyle = 'rgba(0, 0, 0, 0.5)';
+    this.context.fillRect(x, y, boxWidth, boxHeight);
+
+    this.context.textAlign = 'center';
+    this.context.textBaseline = "middle";
+    this.context.font = "36px sans-serif"
+    this.context.fillStyle = '#ffffff';
+    this.context.fillText(message, this.canvas.width / 2, this.canvas.height / 2)
   }
 
   public setCanvas(canvas: HTMLCanvasElement) {
