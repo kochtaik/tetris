@@ -1,7 +1,7 @@
 import BoardMatrix from "./Matrix";
 import Tetromino from "./Tetromino";
 import Controllers from "./controllers";
-import { 
+import {
   ROWS,
   COLUMNS,
   TETROMINOS,
@@ -83,7 +83,7 @@ class Game {
     this.controllers.isPaused = value;
   }
 
-  generateTetrominoSequence() {
+  generateTetrominoSequence(): void {
     const names = Object.keys(TETROMINOS);
 
     while (names.length) {
@@ -117,7 +117,7 @@ class Game {
     this.nextPiece.set(nextTetromino);
   }
 
-  reset() {
+  reset(): void {
     this.timer.reset();
     this.renderer.clear();
     this.board.clear();
@@ -132,7 +132,7 @@ class Game {
     cancelAnimationFrame(this.animationId);
   }
 
-  play() {
+  play(): void {
     this.reset();
     this.currentTetromino = this.getCurrentTetromino();
     this.timer.start();
@@ -156,18 +156,18 @@ class Game {
     this.isPaused = !this.isPaused;
   }
 
-  handleGroundHit() {
+  handleGroundHit(): void {
     const rowsDestroyed = this.board.landTetromino(this.currentTetromino);
     this.incrementLevel(rowsDestroyed);
     this.incrementPoints(rowsDestroyed);
     this.currentTetromino = this.getCurrentTetromino();
   }
 
-  isGameOver() {
+  isGameOver(): boolean {
     return this.board.matrix[0].some((cell) => !!cell);
   }
 
-  endGame() {
+  endGame(): void {
     cancelAnimationFrame(this.animationId);
     this.timer.pause();
     this.currentTetromino = null;
@@ -189,7 +189,7 @@ class Game {
     }
   }
 
-  gameLoop(time: number) {
+  gameLoop(time: number): void {
     if (this.isPaused) return;
 
 
@@ -221,7 +221,7 @@ class Game {
     this.animationId = requestAnimationFrame(this.gameLoop.bind(this));
   }
 
-  initRenderer() {
+  initRenderer(): void {
     this.renderer = new Renderer();
     const canvas = document.createElement('canvas');
     const canvasContainer = document.querySelector('#canvasContainer');
@@ -235,7 +235,7 @@ class Game {
     this.renderer.setCanvasSize(CELL_SIZE * COLUMNS, CELL_SIZE * ROWS);
   }
 
-  init() {
+  init(): void {
     this.initRenderer();
     this.board.create();
     this.renderer.draw(this.board.matrix); // initial render to draw grid

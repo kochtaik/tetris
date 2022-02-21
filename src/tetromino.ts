@@ -11,15 +11,15 @@ class Tetromino {
     this.column = column;
   }
 
-  public moveLeft() {
+  public moveLeft(): void {
     this.column -= 1;
   }
 
-  public moveRight() {
+  public moveRight(): void {
     this.column += 1;
   }
 
-  public moveDown() {
+  public moveDown(): void {
     this.row += 1;
   }
 

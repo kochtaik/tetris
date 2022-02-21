@@ -60,7 +60,7 @@ class Canvas {
   /**
    * Shows provided message on the canvas
    */
-  public showMessage(message: string) {
+  public showMessage(message: string): void {
     const boxHeight = CELL_SIZE * 7;
     const boxWidth = this.canvas.width;
     const x = 0;
@@ -75,12 +75,12 @@ class Canvas {
     this.context.fillText(message, this.canvas.width / 2, this.canvas.height / 2);
   }
 
-  public setCanvas(canvas: HTMLCanvasElement) {
+  public setCanvas(canvas: HTMLCanvasElement): void {
     this.canvas = canvas;
     this.context = canvas.getContext('2d');
   }
 
-  public setCanvasSize(width = 300, height = 150) {
+  public setCanvasSize(width = 300, height = 150): void {
     if (!this.canvas) {
       throw new Error('No canvas found. Please, provide canvas');
     }
@@ -92,7 +92,7 @@ class Canvas {
   /**
    * Clears the canvas
    */
-  public clear() {
+  public clear(): void {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 }

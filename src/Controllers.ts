@@ -74,7 +74,7 @@ class Controllers {
     });
   }
 
-  public setTetromino(tetromino: Tetromino) {
+  public setTetromino(tetromino: Tetromino): void {
     this.tetromino = tetromino;
   }
 }

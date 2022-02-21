@@ -34,11 +34,11 @@ class Timer {
     }, 1000);
   }
 
-  public pause() {
+  public pause(): void {
     clearInterval(this.timerId);
   }
 
-  public reset() {
+  public reset(): void {
     this.timeStart = 0;
     this.elapsedTime = 0;
     this.hours = 0;
