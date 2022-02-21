@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --clr-neon: hsl(317 100% 54%);
+  --clr-bg: hsl(323 21% 16%)
+}
+
+html,
+body {
+  height: 100%;
+  background-color: #000;
+  color: var(--clr-neon);
+  font-family: 'Orbitron', sans-serif;
+}
+
+canvas {
+  border: var(--clr-neon) 3px solid;
+  box-shadow: inset 0 0 0.5em 0 var(--clr-neon), 0 0 0.5em 0 var(--clr-neon);
+  border-radius: 0.25em;
+}
+
+button {
+  font-family: inherit;
+  font-size: 20px;
+  height: 60px;
+  width: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  border: var(--clr-neon) 3px solid;
+  background-color: transparent;
+  color: inherit;
+  border-radius: 0.25em;
+  text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em currentColor;
+  box-shadow: inset 0 0 0.5em 0 var(--clr-neon), 0 0 0.5em 0 var(--clr-neon);
+  transition: all 0.5s;
+
+  &:hover {
+    background-color: var(--clr-neon);
+    color: #fff
+  }
+} 
+
+main {
+  height: 100%;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .sections {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+  }
+
+  .info {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .controls {
+      display: flex;      
+
+      button:first-child {
+        margin-right: 0.7rem;
+      }
+    }
+
+    .stats {
+      padding: 1rem;
+      box-shadow: inset 0 0 0.5em 0 var(--clr-neon), 0 0 0.5em 0 var(--clr-neon);
+      border: var(--clr-neon) 3px solid;
+      text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em currentColor;
+      border-radius: 0.25em;  
+      font-size: 1.25rem;
+  
+  
+      caption {
+        margin-bottom: 1rem;
+      }
+    }
+
+    .next-piece {
+      display: flex;
+      justify-content: center;
+    }
+  }
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href='https://fonts.googleapis.com/css?family=Share+Tech|Orbitron:500' rel='stylesheet' type='text/css'>
+  <title>Tetris</title>
+</head>
+
+<body>
+  <main>
+    <div class="sections">
+      <div id="canvasContainer"></div>
+
+      <div class="info">
+        <div class="controls">
+          <button id="start">Start</button>
+          <button id="pause">Pause</button>
+          <button id="resume" style="display: none;">Resume</button>
+        </div>
+
+        <div class="stats">
+          <table cellspacing="5">
+            <caption>Statistics</caption>
+            <tr>
+              <td>Level:</td>
+              <td>
+                <span id="level">1</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Score:</td>
+              <td id="points">0</td>
+            </tr>
+            <tr>
+              <td>Time:</td>
+              <td>
+                <span id="elapsedTime">00:00:00</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="next-piece" id="nextPiece"></div>
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>
