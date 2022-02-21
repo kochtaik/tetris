@@ -1,7 +1,16 @@
 import BoardMatrix from "./Matrix";
 import Tetromino from "./Tetromino";
 import Controllers from "./controllers";
-import { ROWS, COLUMNS, TETROMINOS, CELL_SIZE, POINTS_COEFFICIENT } from "./config";
+import { 
+  ROWS,
+  COLUMNS,
+  TETROMINOS,
+  CELL_SIZE,
+  POINTS_COEFFICIENT,
+  INITIAL_SPEED,
+  LINES_BEFORE_NEXT_LEVEL_COEFFICIENT,
+  NEXT_LEVEL_SPEED
+} from "./config";
 import { getRandomInRange } from "./utils/getRandomInRange";
 import Renderer from "./Renderer";
 import Timer from "./Timer";
@@ -32,8 +41,8 @@ class Game {
     this.frameStamp = 0;
     this._points = 0;
     this._level = 1;
-    this.speed = 48; // speed is measured in frames per cell
-    this.linesBeforeNextLevel = this.level * 10;
+    this.speed = INITIAL_SPEED; // speed is measured in frames per cell
+    this.linesBeforeNextLevel = this.level * LINES_BEFORE_NEXT_LEVEL_COEFFICIENT;
   }
 
   get points(): number {
@@ -115,8 +124,8 @@ class Game {
     this.nextPiece.clear();
     this.level = 1;
     this.points = 0;
-    this.speed = 48;
-    this.linesBeforeNextLevel = this.level * 10;
+    this.speed = INITIAL_SPEED;
+    this.linesBeforeNextLevel = this.level * LINES_BEFORE_NEXT_LEVEL_COEFFICIENT;
     this.frameStamp = 0;
     this.isPaused = false;
     (document.querySelector("#pause") as HTMLElement).textContent = "Pause";
@@ -175,8 +184,8 @@ class Game {
 
     if (this.linesBeforeNextLevel <= 0) {
       this.level += 1;
-      this.linesBeforeNextLevel = (this.level * 10) - rowsNumber;
-      this.speed -= 5;
+      this.linesBeforeNextLevel = (this.level * LINES_BEFORE_NEXT_LEVEL_COEFFICIENT) - rowsNumber;
+      this.speed -= NEXT_LEVEL_SPEED;
     }
   }
 
