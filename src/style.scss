@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
 *,
 *::after,
 *::before {
@@ -15,14 +17,14 @@ html,
 body {
   height: 100%;
   background-color: #000;
-  color: #fff;
-  font-family: 'Orbitron', Verdana, sans-serif;
+  color: var(--clr-neon);
+  font-family: 'Orbitron', sans-serif;
 }
 
 canvas {
-  background-color: #000;
+  border: var(--clr-neon) 3px solid;
   box-shadow: inset 0 0 0.5em 0 var(--clr-neon), 0 0 0.5em 0 var(--clr-neon);
-
+  border-radius: 0.25em;
 }
 
 button {
@@ -35,9 +37,9 @@ button {
   align-items: center;
   cursor: pointer;
   text-decoration: none;
-  color: var(--clr-neon);
   border: var(--clr-neon) 3px solid;
   background-color: transparent;
+  color: inherit;
   border-radius: 0.25em;
   text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em currentColor;
   box-shadow: inset 0 0 0.5em 0 var(--clr-neon), 0 0 0.5em 0 var(--clr-neon);
@@ -79,9 +81,9 @@ main {
     .stats {
       padding: 1rem;
       box-shadow: inset 0 0 0.5em 0 var(--clr-neon), 0 0 0.5em 0 var(--clr-neon);
+      border: var(--clr-neon) 3px solid;
       text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em currentColor;
-      color: var(--clr-neon);
-      border-radius: 0.75rem;
+      border-radius: 0.25em;  
       font-size: 1.25rem;
   
   

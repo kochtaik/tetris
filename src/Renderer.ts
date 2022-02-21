@@ -70,7 +70,8 @@ class Canvas {
 
     this.context.textAlign = 'center';
     this.context.textBaseline = "middle";
-    this.context.font = "36px sans-serif";
+    const bodyFont = getComputedStyle(document.body).getPropertyValue("font-family") || "sans-serif";
+    this.context.font = `36px ${bodyFont}`;
     this.context.fillStyle = '#ffffff';
     this.context.fillText(message, this.canvas.width / 2, this.canvas.height / 2);
   }
