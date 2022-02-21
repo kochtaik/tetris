@@ -1,4 +1,8 @@
-# tetris
+# Tetris
+
+A simple tetris game written on TypeScript and SASS. It uses pure HTML5 Canvas API to render the game board.
+
+![Tetris](https://user-images.githubusercontent.com/60788110/154923259-c05084e7-468d-4643-b26f-635207005e03.png)
 
 To run the application:
 
