@@ -6,8 +6,6 @@ To run the application:
 
 `cd tetris`
 
-`git switch master`
-
 `npm install`
 
 `npm run dev`
